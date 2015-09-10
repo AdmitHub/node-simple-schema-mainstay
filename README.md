@@ -20,24 +20,17 @@ Test:
 
     npm test
 
-Issues
-~~~~~~
+## Issues
 
- - Since all of the ``Meteor`` bits are stubbed out, no reactive data or Deps
-   will work. Simple validation of objects should work fine.
- - Several tests relating to counting the number of errors present when setting
-   an array to a non-array field are failing (possibly due to reliance on some
-   dependent variable).  Since reasonable errors validation errors are still
-   returned in these cases, I've not investigated further.  These cases are
-   marked with "XXX" in ``simple-schema-tests.js``.
- - This hasn't been tested a whole lot beyond the test suite from
-   meteor-simple-schema, so any areas without adequate coverage there could be
-   busted.
+This is fun
 
---------
+ - Since all of the ``Meteor`` bits are stubbed out, no reactive data or Deps will work. Simple validation of objects should work fine.
+ - Several tests relating to counting the number of errors present when setting an array to a non-array field are failing (possibly due to reliance on some dependent variable).  Since reasonable errors validation errors are still returned in these cases, I've not investigated further.  These cases are marked with "XXX" in ``simple-schema-tests.js``.
+ - This hasn't been tested a whole lot beyond the test suite from meteor-simple-schema, so any areas without adequate coverage there could be busted.
+
+<hr>
 
 Original README with documentation of SimpleSchema follows.
-
 
 SimpleSchema
 =========================
