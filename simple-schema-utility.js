@@ -1,6 +1,7 @@
+var _ = require("lodash");
 /* global Utility:true */
 
-Utility = {
+var Utility = {
   appendAffectedKey: function appendAffectedKey(affectedKey, key) {
     if (key === "$each") {
       return affectedKey;
@@ -62,3 +63,5 @@ Utility = {
     return date.getUTCFullYear() + '-' + m + '-' + d;
   }
 };
+
+module.exports = Utility;

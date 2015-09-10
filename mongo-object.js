@@ -1,3 +1,4 @@
+var _ = require("lodash");
 /* global MongoObject:true */
 
 
@@ -68,7 +69,7 @@ var extractOp = function extractOp(position) {
  * upon creation of the instance, the object will have any `undefined` keys
  * removed recursively.
  */
-MongoObject = function(objOrModifier, blackBoxKeys) {
+var MongoObject = function(objOrModifier, blackBoxKeys) {
   var self = this;
   self._obj = objOrModifier;
   self._affectedKeys = {};
@@ -753,3 +754,4 @@ MongoObject._positionToKey = function positionToKey(position) {
   return key;
 };
 
+module.exports = MongoObject;

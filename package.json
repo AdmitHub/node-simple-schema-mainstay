@@ -1,0 +1,28 @@
+{
+  "name": "node-simple-schema",
+  "version": "0.0.1",
+  "description": "Vanilla node compatible fork of meteor simple-schema, with no reactive components.",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourcelf/node-simple-schema.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/yourcelf/node-simple-schema/issues"
+  },
+  "homepage": "https://github.com/yourcelf/node-simple-schema",
+  "dependencies": {
+    "ejson": "^2.1.1",
+    "lodash": "^3.10.1",
+    "string": "^3.3.1"
+  },
+  "devDependencies": {
+    "chai": "^3.2.0",
+    "mocha": "^2.3.2"
+  }
+}

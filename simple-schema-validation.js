@@ -1,3 +1,7 @@
+var Utility = require("./simple-schema-utility");
+var _ = require("lodash");
+var MongoObject = require("./mongo-object");
+
 /* global Utility */
 /* global _ */
 /* global SimpleSchema */
@@ -94,7 +98,7 @@ function doTypeChecks(def, keyValue, op) {
 
 }
 
-doValidation1 = function doValidation1(obj, isModifier, isUpsert, keyToValidate, ss, extendedCustomContext) {
+var doValidation1 = function doValidation1(obj, isModifier, isUpsert, keyToValidate, ss, extendedCustomContext) {
   // First do some basic checks of the object, and throw errors if necessary
   if (!_.isObject(obj)) {
     throw new Error("The first argument of validate() or validateOne() must be an object");
@@ -109,6 +113,7 @@ doValidation1 = function doValidation1(obj, isModifier, isUpsert, keyToValidate,
 
   // Validation function called for each affected key
   function validate(val, affectedKey, affectedKeyGeneric, def, op, skipRequiredCheck, isInArrayItemObject, isInSubObject) {
+    var SimpleSchema = require("./simple-schema");
 
     // Get the schema for this key, marking invalid if there isn't one.
     if (!def) {
@@ -203,6 +208,7 @@ doValidation1 = function doValidation1(obj, isModifier, isUpsert, keyToValidate,
 
   // The recursive function
   function checkObj(val, affectedKey, operator, setKeys, isInArrayItemObject, isInSubObject) {
+    var SimpleSchema = require("./simple-schema");
     var affectedKeyGeneric, def;
 
     if (affectedKey) {
@@ -334,4 +340,8 @@ doValidation1 = function doValidation1(obj, isModifier, isUpsert, keyToValidate,
   });
 
   return invalidKeys;
+};
+
+module.exports = {
+  doValidation1: doValidation1
 };

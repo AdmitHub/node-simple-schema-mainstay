@@ -1,4 +1,43 @@
-[![Build Status](https://travis-ci.org/aldeed/meteor-simple-schema.png?branch=master)](https://travis-ci.org/aldeed/meteor-simple-schema)
+Node SimpleSchema
+===========================
+
+This is a fork of
+[meteor-simple-schema](https://github.com/aldeed/meteor-simple-schema) that
+removes the "Meteor" parts, and is usable as a standard npm package in a
+regular node environment.  The goal is to enable non-meteor node applications
+to validate objects against the same model schemas written for meteor
+applications.
+
+The SimpleSchema code is modified as little as possible -- primarily just
+adding boilerplate to resolve all parts using CommonJS require statements
+rather than globals, and stubbing out the Meteor world.
+
+Install:
+
+    npm install node-simple-schema
+
+Test:
+
+    npm test
+
+Issues
+~~~~~~
+
+ - Since all of the ``Meteor`` bits are stubbed out, no reactive data or Deps
+   will work. Simple validation of objects should work fine.
+ - Several tests relating to counting the number of errors present when setting
+   an array to a non-array field are failing (possibly due to reliance on some
+   dependent variable).  Since reasonable errors validation errors are still
+   returned in these cases, I've not investigated further.  These cases are
+   marked with "XXX" in ``simple-schema-tests.js``.
+ - This hasn't been tested a whole lot beyond the test suite from
+   meteor-simple-schema, so any areas without adequate coverage there could be
+   busted.
+
+--------
+
+Original README with documentation of SimpleSchema follows.
+
 
 SimpleSchema
 =========================
@@ -335,7 +374,7 @@ That last point can be confusing, so let's look at a couple examples:
 * Say you have a required key "friends.address.city" but "friends.address" is
 optional. If "friends.address" is set in the object you're validating, but
 "friends.address.city" is not, there is a validation error. However, if
-"friends.address" is *not* set, then there is no validation error for 
+"friends.address" is *not* set, then there is no validation error for
 "friends.address.city" because the object it belongs to is not present.
 * If you have a required key "friends.$.name", but the `friends` array has
 no objects in the object you are validating, there is no validation error
@@ -361,8 +400,8 @@ the minimum Date for a field should be "today".
 ### exclusiveMin/exclusiveMax
 
 Set to `true` to indicate that the range of numeric values, as set by min/max,
-are to be treated as an exclusive range. Set to `false` (default) to treat ranges as 
-inclusive. 
+are to be treated as an exclusive range. Set to `false` (default) to treat ranges as
+inclusive.
 
 ### decimal
 
@@ -407,7 +446,7 @@ validated as well, so you must define all allowed properties in the schema. If t
 not possible or you don't care to validate the object's properties, use the
 `blackbox: true` option to skip validation for everything within the object.
 
-Custom object types are treated as blackbox objects by default. However, 
+Custom object types are treated as blackbox objects by default. However,
 when using collection2, you must ensure that the custom type is not lost
 between client and server. This can be done with a `transform` function that
 converts the generic Object to the custom object. Without this transformation,
@@ -463,7 +502,7 @@ function:
 you return undefined.
 * `value`: If isSet = true, this contains the field's current (requested) value
 in the document or modifier.
-* `operator`: If isSet = true and isUpdate = true, this contains the name of the 
+* `operator`: If isSet = true and isUpdate = true, this contains the name of the
 update operator in the modifier in which this field is being changed. For example,
 if the modifier were `{$set: {name: "Alice"}}`, in the autoValue function for
 the `name` field, `this.isSet` would be true, `this.value` would be "Alice",
@@ -614,7 +653,7 @@ check({admin: true}, mySchema); // throw a Match.Error
 
 There are three ways to attach custom validation methods:
 
-* To add a custom validation function that is called for all keys in all 
+* To add a custom validation function that is called for all keys in all
 defined schemas, use `SimpleSchema.addValidator(myFunction)`.
 * To add a custom validation function that is called for all keys for a
 specific SimpleSchema instance, use `mySimpleSchema.addValidator(myFunction)`.
@@ -759,7 +798,7 @@ method returns the normalized copy.
 
 ## Customizing Validation Messages
 
-To customize validation messages, pass a messages object to either 
+To customize validation messages, pass a messages object to either
 `SimpleSchema.messages()` or `mySimpleSchemaInstance.messages()`. Instance-specific
 messages are given priority over global messages.
 
@@ -858,7 +897,7 @@ portion and you want to specify a minimum date, `min` should be set to midnight
 UTC on the minimum date (inclusive).
 
 Following these rules ensures maximum interoperability with HTML5 date inputs
-and usually just makes sense. 
+and usually just makes sense.
 
 ## Collection2 and AutoForm
 
@@ -881,13 +920,13 @@ optional, and then use a custom function similar to this:
     optional: true,
     custom: function () {
       var shouldBeRequired = this.field('saleType').value == 1;
-    
+
       if (shouldBeRequired) {
         // inserts
         if (!this.operator) {
           if (!this.isSet || this.value === null || this.value === "") return "required";
         }
-    
+
         // updates
         else if (this.isSet) {
           if (this.operator === "$set" && this.value === null || this.value === "") return "required";

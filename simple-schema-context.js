@@ -1,3 +1,10 @@
+var _ = require("lodash");
+var doValidation1 = require("./simple-schema-validation").doValidation1;
+var doValidation2 = require("./simple-schema-validation-new").doValidation2;
+var shims = require("./shims");
+var Meteor = shims.Meteor;
+var Deps = shims.Deps;
+
 /* global SimpleSchema */
 /* global SimpleSchemaValidationContext:true */
 /* global doValidation1 */
@@ -13,7 +20,7 @@ function doValidation(obj, isModifier, isUpsert, keyToValidate, ss, extendedCust
  * PUBLIC API
  */
 
-SimpleSchemaValidationContext = function SimpleSchemaValidationContext(ss) {
+var SimpleSchemaValidationContext = function SimpleSchemaValidationContext(ss) {
   var self = this;
   self._simpleSchema = ss;
   self._schema = ss.schema();
@@ -148,6 +155,7 @@ SimpleSchemaValidationContext.prototype._markKeysChanged = function simpleSchema
   }
 
   _.each(keys, function(name) {
+    var SimpleSchema = require("./simple-schema");
     var genericName = SimpleSchema._makeGeneric(name);
     if (genericName in self._deps) {
       self._deps[genericName].changed();
@@ -158,6 +166,7 @@ SimpleSchemaValidationContext.prototype._markKeysChanged = function simpleSchema
 
 SimpleSchemaValidationContext.prototype._getInvalidKeyObject = function simpleSchemaValidationContextGetInvalidKeyObject(name, genericName) {
   var self = this;
+  var SimpleSchema = require("./simple-schema");
   genericName = genericName || SimpleSchema._makeGeneric(name);
 
   var errorObj = _.findWhere(self._invalidKeys, {name: name});
@@ -173,6 +182,7 @@ SimpleSchemaValidationContext.prototype._keyIsInvalid = function simpleSchemaVal
 
 // Like the internal one, but with deps
 SimpleSchemaValidationContext.prototype.keyIsInvalid = function simpleSchemaValidationContextKeyIsInvalid(name) {
+  var SimpleSchema = require("./simple-schema");
   var self = this, genericName = SimpleSchema._makeGeneric(name);
   self._deps[genericName] && self._deps[genericName].depend();
 
@@ -180,14 +190,15 @@ SimpleSchemaValidationContext.prototype.keyIsInvalid = function simpleSchemaVali
 };
 
 SimpleSchemaValidationContext.prototype.keyErrorMessage = function simpleSchemaValidationContextKeyErrorMessage(name) {
+  var SimpleSchema = require("./simple-schema");
   var self = this, genericName = SimpleSchema._makeGeneric(name);
   self._deps[genericName] && self._deps[genericName].depend();
-  
+
   var errorObj = self._getInvalidKeyObject(name, genericName);
   if (!errorObj) {
     return "";
   }
-  
+
   return self._simpleSchema.messageForError(errorObj.type, errorObj.name, null, errorObj.value);
 };
 
@@ -211,3 +222,5 @@ SimpleSchemaValidationContext.prototype.getErrorObject = function simpleSchemaVa
   }
   return error;
 };
+
+module.exports = SimpleSchemaValidationContext;

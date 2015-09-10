@@ -1,3 +1,11 @@
+var Utility = require("./simple-schema-utility");
+var _ = require("lodash");
+var SimpleSchema = require("./simple-schema");
+var MongoObject = require("./mongo-object");
+var shims = require("./shims");
+var Meteor = shims.Meteor;
+var Random = shims.Random;
+
 /* global Utility */
 /* global _ */
 /* global SimpleSchema */
@@ -96,7 +104,7 @@ function doTypeChecks(def, keyValue, op) {
 
 }
 
-doValidation2 = function doValidation2(obj, isModifier, isUpsert, keyToValidate, ss, extendedCustomContext) {
+var doValidation2 = function doValidation2(obj, isModifier, isUpsert, keyToValidate, ss, extendedCustomContext) {
 
   // First do some basic checks of the object, and throw errors if necessary
   if (!_.isObject(obj)) {
@@ -290,7 +298,7 @@ function convertModifierToDoc(mod, schema, isUpsert) {
   var t = new Meteor.Collection(null);
 
   // LocalCollections are in memory, and it seems
-  // that it's fine to use them synchronously on 
+  // that it's fine to use them synchronously on
   // either client or server
   var id;
   if (isUpsert) {
@@ -341,7 +349,7 @@ function convertModifierToDoc(mod, schema, isUpsert) {
     // Now update it with the modifier
     t.update(id, mod);
   }
-  
+
   var doc = t.findOne(id);
   // We're done with it
   t.remove(id);
@@ -352,3 +360,7 @@ function convertModifierToDoc(mod, schema, isUpsert) {
   }
   return doc;
 }
+
+module.exports = {
+  doValidation2: doValidation2
+};

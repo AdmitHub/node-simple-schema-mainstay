@@ -1,15 +1,28 @@
+var SimpleSchemaValidationContext = require("./simple-schema-context");
+var MongoObject = require("./mongo-object");
+var Utility = require("./simple-schema-utility");
+var S = require("string");
+var _ = require("lodash");
+var shims = require("./shims");
+var Meteor = shims.Meteor;
+var Deps = shims.Deps;
+var Match = shims.Match;
+var check = shims.check;
+
 /* global SimpleSchema:true */
 /* global SimpleSchemaValidationContext */
 /* global MongoObject */
 /* global Utility */
 /* global S:true */
 
+/*
 if (Meteor.isServer) {
   S = Npm.require("string");
 }
 if (Meteor.isClient) {
   S = window.S;
 }
+*/
 
 var schemaDefinition = {
   type: Match.Any,
@@ -427,7 +440,7 @@ function getAutoValues(mDoc, isModifier, extendedAutoValueContext) {
 }
 
 //exported
-SimpleSchema = function(schemas, options) {
+var SimpleSchema = function(schemas, options) {
   var self = this;
   var firstLevelSchemaKeys = [];
   var fieldNameRoot;
@@ -1139,3 +1152,5 @@ SimpleSchema.prototype.objectKeys = function(keyPrefix) {
   }
   return self._objectKeys[keyPrefix + "."] || [];
 };
+
+module.exports = SimpleSchema;

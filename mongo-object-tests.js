@@ -1,3 +1,7 @@
+var MongoObject = require("./mongo-object");
+var Tinytest = require("./tinytest-shim");
+var _ = require("lodash");
+
 /* global MongoObject */
 
 var flat = function(doc, opts) {
@@ -113,14 +117,14 @@ Tinytest.add("MongoObject - removeValueForPosition", function(test) {
   }, {
     foo: "bar"
   }, 'fooBar');
-  
+
   // all descendents are removed, too
   testRemove({
     foo: {
       bar: "foobar"
     }
   }, {}, 'foo');
-  
+
   // but not siblings
   testRemove({
     foo: {
@@ -144,19 +148,19 @@ Tinytest.add("MongoObject - getValueForPosition", function(test) {
     var jexp = JSON.stringify(exp);
     test.equal(jval, jexp, "Wrong value returned for position " + pos + " in object " + jo);
   }
-  
+
   testGetVal({$pull: {foo: "bar"}}, '$pull', {foo: "bar"});
 
   testGetVal({$pull: {foo: "bar"}}, '$pull[foo]', 'bar');
-  
+
   testGetVal({foo: ['bar']}, 'foo', ['bar']);
-  
+
   testGetVal({foo: ['bar']}, 'foo[0]', 'bar');
-  
+
   testGetVal({foo: [{a: 1}, {a: 2}]}, 'foo', [{a: 1}, {a: 2}]);
-  
+
   testGetVal({foo: [{a: 1}, {a: 2}]}, 'foo[1]', {a: 2});
-  
+
   testGetVal({foo: [{a: 1}, {a: 2}]}, 'foo[1][a]', 2);
 
 });
@@ -171,23 +175,23 @@ Tinytest.add("MongoObject - getInfoForKey", function(test) {
     var jexp = JSON.stringify(exp);
     test.equal(jinfo, jexp, "Wrong info returned for object " + jo);
   }
-  
+
   testGetInfo({$set: {foo: "bar"}}, 'foo', {value: 'bar', operator: '$set'});
-  
+
   testGetInfo({$set: {'foo.bar': 1}}, 'foo.bar', {value: 1, operator: '$set'});
-  
+
   testGetInfo({$set: {'foo.bar': 1}}, '$set', undefined); //not valid
-  
+
   testGetInfo({$set: {'foo.bar.0': 1}}, 'foo.bar.0', {value: 1, operator: '$set'});
-  
+
   testGetInfo({$pull: {foo: "bar"}}, 'foo', {value: 'bar', operator: '$pull'});
-  
+
   testGetInfo({foo: ['bar']}, 'foo', {value: ['bar'], operator: null});
-  
+
   testGetInfo({foo: ['bar']}, 'foo.0', {value: 'bar', operator: null});
-  
+
   testGetInfo({foo: [{a: 1}, {a: 2}]}, 'foo.1.a', {value: 2, operator: null});
-  
+
   testGetInfo({foo: [{a: 1}, {a: 2}]}, 'foo.1', {value: {a: 2}, operator: null});
 
 });
