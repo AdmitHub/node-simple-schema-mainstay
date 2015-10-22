@@ -1,6 +1,6 @@
 {
   "name": "node-simple-schema",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Vanilla node compatible fork of meteor simple-schema, with no reactive components.",
   "main": "index.js",
   "scripts": {
