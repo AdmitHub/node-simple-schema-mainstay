@@ -54,13 +54,13 @@ SimpleSchemaValidationContext.prototype.validate = function simpleSchemaValidati
 
   //note any currently invalid keys so that we can mark them as changed
   //due to new validation (they may be valid now, or invalid in a different way)
-  var removedKeys = _.pluck(self._invalidKeys, "name");
+  var removedKeys = _.map(self._invalidKeys, "name");
 
   //update
   self._invalidKeys = invalidKeys;
 
   //add newly invalid keys to changedKeys
-  var addedKeys = _.pluck(self._invalidKeys, "name");
+  var addedKeys = _.map(self._invalidKeys, "name");
 
   //mark all changed keys as changed
   var changedKeys = _.union(addedKeys, removedKeys);
@@ -114,7 +114,7 @@ SimpleSchemaValidationContext.prototype.validateOne = function simpleSchemaValid
 //reset the invalidKeys array
 SimpleSchemaValidationContext.prototype.resetValidation = function simpleSchemaValidationContextResetValidation() {
   var self = this;
-  var removedKeys = _.pluck(self._invalidKeys, "name");
+  var removedKeys = _.map(self._invalidKeys, "name");
   self._invalidKeys = [];
   self._markKeysChanged(removedKeys);
 };
@@ -169,9 +169,9 @@ SimpleSchemaValidationContext.prototype._getInvalidKeyObject = function simpleSc
   var SimpleSchema = require("./simple-schema");
   genericName = genericName || SimpleSchema._makeGeneric(name);
 
-  var errorObj = _.findWhere(self._invalidKeys, {name: name});
+  var errorObj = _.find(self._invalidKeys, {name: name});
   if (!errorObj) {
-    errorObj = _.findWhere(self._invalidKeys, {name: genericName});
+    errorObj = _.find(self._invalidKeys, {name: genericName});
   }
   return errorObj;
 };

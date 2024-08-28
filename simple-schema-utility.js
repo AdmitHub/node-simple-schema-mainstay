@@ -13,7 +13,7 @@ var Utility = {
     if (key === "$pushAll") {
       throw new Error("$pushAll is not supported; use $push + $each");
     }
-    return !_.contains(["$pull", "$pullAll", "$pop", "$slice"], key);
+    return  !_.includes(["$pull", "$pullAll", "$pop", "$slice"], key);
   },
   errorObject: function errorObject(errorType, keyName, keyValue) {
     return {name: keyName, type: errorType, value: keyValue};

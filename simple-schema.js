@@ -322,7 +322,7 @@ function getAutoValues(mDoc, isModifier, extendedAutoValueContext) {
   function runAV(func) {
     var affectedKey = this.key;
     // If already called for this key, skip it
-    if (_.contains(doneKeys, affectedKey)) {
+    if (_.includes(doneKeys, affectedKey)) {
       return;
     }
     var lastDot = affectedKey.lastIndexOf('.');
@@ -514,7 +514,7 @@ var SimpleSchema = function(schemas, options) {
       self._blackboxKeys.push(fieldName);
     }
 
-    if (!_.contains(firstLevelSchemaKeys, fieldNameRoot)) {
+    if (!_.includes(firstLevelSchemaKeys, fieldNameRoot)) {
       firstLevelSchemaKeys.push(fieldNameRoot);
     }
   });
@@ -1021,9 +1021,9 @@ SimpleSchema.prototype.messageForError = function(type, key, def, value) {
 
     // If not, see if there's a default message defined
     if (!msgObj) {
-      msgObj = _.findWhere(message, {exp: null});
+      msgObj = _.find(message, {exp: null});
       if (!msgObj) {
-        msgObj = _.findWhere(message, {exp: void 0});
+        msgObj = _.find(message, {exp: void 0});
       }
     }
 
@@ -1109,7 +1109,7 @@ SimpleSchema.prototype.allowsKey = function(key) {
   var self = this;
 
   // Loop through all keys in the schema
-  return _.any(self._schemaKeys, function(schemaKey) {
+  return _.some(self._schemaKeys, function(schemaKey) {
 
     // If the schema key is the test key, it's allowed.
     if (schemaKey === key) {
