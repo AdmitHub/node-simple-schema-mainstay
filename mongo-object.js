@@ -118,7 +118,7 @@ var MongoObject = function(objOrModifier, blackBoxKeys) {
       affectedKeyGeneric = makeGeneric(affectedKey);
 
       // Determine whether affected key should be treated as a black box
-      affectedKeyIsBlackBox = _.contains(blackBoxKeys, affectedKeyGeneric);
+      affectedKeyIsBlackBox = _.includes(blackBoxKeys, affectedKeyGeneric);
 
       // Mark that this position affects this generic and non-generic key
       if (currentPosition) {
@@ -204,7 +204,7 @@ var MongoObject = function(objOrModifier, blackBoxKeys) {
 
     var updatedValues = {};
     _.each(self._affectedKeys, function(affectedKey, position) {
-      if (options.endPointsOnly && _.contains(self._parentPositions, position)) {
+      if (options.endPointsOnly && _.includes(self._parentPositions, position)) {
         return; //only endpoints
       }
       func.call({
@@ -443,7 +443,7 @@ var MongoObject = function(objOrModifier, blackBoxKeys) {
   self.removeGenericKeys = function(keys) {
     for (var position in self._genericAffectedKeys) {
       if (self._genericAffectedKeys.hasOwnProperty(position)) {
-        if (_.contains(keys, self._genericAffectedKeys[position])) {
+        if (_.includes(keys, self._genericAffectedKeys[position])) {
           self.removeValueForPosition(position);
         }
       }
@@ -512,7 +512,7 @@ var MongoObject = function(objOrModifier, blackBoxKeys) {
     for (var position in self._genericAffectedKeys) {
       if (self._genericAffectedKeys.hasOwnProperty(position)) {
         gk = self._genericAffectedKeys[position];
-        if (!_.contains(checkedKeys, gk)) {
+        if (!_.includes(checkedKeys, gk)) {
           checkedKeys.push(gk);
           if (gk && !test(gk)) {
             keysToRemove.push(gk);
@@ -600,8 +600,8 @@ var MongoObject = function(objOrModifier, blackBoxKeys) {
     var newObj = {};
     _.each(self._affectedKeys, function(affectedKey, position) {
       if (typeof affectedKey === "string" &&
-        (options.keepArrays === true && !_.contains(self._positionsInsideArrays, position) && !_.contains(self._objectPositions, position)) ||
-        (!options.keepArrays && !_.contains(self._parentPositions, position))
+        (options.keepArrays === true && !_.includes(self._positionsInsideArrays, position) && !_.includes(self._objectPositions, position)) ||
+        (!options.keepArrays && !_.includes(self._parentPositions, position))
         ) {
         newObj[affectedKey] = self.getValueForPosition(position);
       }

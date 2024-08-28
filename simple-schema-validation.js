@@ -159,7 +159,7 @@ var doValidation1 = function doValidation1(obj, isModifier, isUpsert, keyToValid
       }
 
       // Check value against allowedValues array
-      if (def.allowedValues && !_.contains(def.allowedValues, val)) {
+      if (def.allowedValues && !_.includes(def.allowedValues, val)) {
         invalidKeys.push(Utility.errorObject("notAllowed", affectedKey, val, def, ss));
         return;
       }
@@ -303,7 +303,7 @@ var doValidation1 = function doValidation1(obj, isModifier, isUpsert, keyToValid
         if (isUpsert && op === "$set") {
           var presentKeys = _.keys(opObj);
           _.each(ss.objectKeys(), function (schemaKey) {
-            if (!_.contains(presentKeys, schemaKey)) {
+            if (!_.includes(presentKeys, schemaKey)) {
               checkObj(void 0, schemaKey, op, setKeys);
             }
           });
@@ -332,7 +332,7 @@ var doValidation1 = function doValidation1(obj, isModifier, isUpsert, keyToValid
   // Make sure there is only one error per fieldName
   var addedFieldNames = [];
   invalidKeys = _.filter(invalidKeys, function(errObj) {
-    if (!_.contains(addedFieldNames, errObj.name)) {
+    if (!_.includes(addedFieldNames, errObj.name)) {
       addedFieldNames.push(errObj.name);
       return true;
     }
