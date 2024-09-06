@@ -486,16 +486,22 @@ string.js - Copyright (C) 2012-2013, JP Richardson <jprichardson@gmail.com>
     },
 
     //#modified from https://github.com/epeli/underscore.string
+    // Further modified to match https://github.com/jprichardson/string.js/pull/217/commits/eab9511e4efbc8c521e18b6cf2e8565ae50c5a16
+    // as suggested by dependabot
     underscore: function() {
-      var s = this.trim().s.replace(/([a-z\d])([A-Z]+)/g, '$1_$2').replace(/[-\s]+/g, '_').toLowerCase();
+      var s = this.trim().s.replace(/([A-Z])/g, function (_, m, i) {
+        return (i ? '_' : '') + m.toLowerCase();
+      }).replace(/[\s_-]+/g, '_');
       if ((new S(this.s.charAt(0))).isUpper()) {
         s = '_' + s;
       }
       return new S(s);
     },
 
+    // Modified to match https://github.com/jprichardson/string.js/pull/217/commits/eab9511e4efbc8c521e18b6cf2e8565ae50c5a16
+    // as suggested by dependabot
     unescapeHTML: function() { //from underscore.string
-      return new S(this.s.replace(/\&([^;]+);/g, function(entity, entityCode){
+      return new this.constructor(this.s.replace(/&([^;]{1,20});/g, function(entity, entityCode){
         var match;
 
         if (entityCode in escapeChars) {
